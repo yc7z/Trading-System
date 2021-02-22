@@ -1,0 +1,63 @@
+FindSplit(S, i, j)
+    if i <= S.left.size < j:
+        return S.root
+    else if S.left.size < i:
+        return FindSplit(S.right, i-S.left.size, j-S.left.size)
+    else if S.left.size >= j:
+        return FindSplit(S.left, i, j)
+
+## given currentNode, i, return currentNode.left if the ith leaf is in the left subtree of currentNode & vice versa
+ReturnNextNode(currentNode, i)
+    if currentNode.left.size >= i:
+        return currentNode.left
+    else:
+        return currentNode.left
+
+
+
+Suppose we are given that l_i is the kth leaf in the left subtree of split
+
+In fact, k = i - FindLeafNum(split)
+
+## return the maximum value among the leaves from and including the kth leaf up to the end
+iUpdateMax(currentNode, k)
+    currentMax =  currentNode.max
+    leafNum = k
+    while currentNode.size != 0:
+        nextNode =  ReturnNextNode(currentNode, leafNum)
+        if nextNode == currentNode.right:
+            currentMax = nextNode.max
+            leafNum = leafNum - currentNode.left.size ## l_i is in the right subtree of currentNode
+            currentNode = nextNode
+        else:
+            currentNode = nextNode
+    return currentMax
+
+
+
+
+Suppose we are given that l_j is the pth leaf in the right subtree of split
+In fact, p = j - FindLeafNum(split)
+
+jUpdateMax(currentNode, p)
+    currentMax = currentNode.max
+    leafNum = p
+    while currentNode.size != 0:
+        nextNode = ReturnNextNode(currentNode, leafNum)
+        if nextNode = currentNode.left:
+            currentMax = nextNode.max
+            currentNode = nextNode
+        else:
+            leafNum = leafNum - currentNode.left.size
+            currentNode = nextNode
+    return currentMax
+
+#return the number of leaves with keys less than the leftmost leaf of the tree rooted at the internal node q
+FindLeafNum(q)
+    if q.parent == NIL:
+        return 0
+    else:
+        if q == q.parent.left:
+            return FindLeafNum(q.parent)
+         else:
+            return FindLeafNum(q.parent) + q.left.size

@@ -1,0 +1,7 @@
+iUpdateMax(currentNode, k)
+    currentMax =  currentNode.max
+    if currentNode.left.size >= k:
+        iUpdateMax(currentNode.left, k)
+    else:       ##currentNode.left.size < k
+        currentMax = currentNode.right.max
+        iUpdateMax(currentNode.right, k-currentNode.left.size)
